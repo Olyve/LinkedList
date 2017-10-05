@@ -94,6 +94,10 @@ class LinkedList(object):
             if quality(item):
                 return item
 
+    def replace(self, item, new_item):
+        node = self._find_node(item)
+        node.data = new_item
+
     def _find_node(self, item):
         """Returns the first node it encounters where data is equal to item"""
         current_node = self.head
@@ -136,6 +140,15 @@ def test_linked_list():
     print('head: ' + str(ll.head))
     print('tail: ' + str(ll.tail))
     print(ll.length())
+
+    ll.append('A')
+    print(ll)
+    ll.append('B')
+    print(ll)
+    ll.append('C')
+    print(ll)
+    ll.replace('B', 'S')
+    print(ll)
 
 
 if __name__ == '__main__':
