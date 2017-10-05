@@ -27,9 +27,9 @@ class LinkedList(object):
 
     def __repr__(self):
         """Return a string representation of this linked list"""
-        return 'LinkedList({})'.format(self.as_list())
+        return 'LinkedList({})'.format(self.items())
 
-    def as_list(self):
+    def items(self):
         """Return a list of all items in this linked list"""
         result = []
         current = self.head
@@ -41,32 +41,77 @@ class LinkedList(object):
 
     def is_empty(self):
         """Return True if this linked list is empty, or False"""
-        return self.head is None
+        return len(self.items()) == 0
 
     def length(self):
         """Return the length of this linked list by traversing its nodes"""
-        # TODO: count number of items
-        pass
+        return len(self.items())
 
     def append(self, item):
         """Insert the given item at the tail of this linked list"""
-        # TODO: append given item
-        pass
+        node = Node(item)
+
+        if self.is_empty():
+            self.head = node
+            node.next = None
+        else:
+            self.tail.next = node
+
+        self.tail = node
 
     def prepend(self, item):
         """Insert the given item at the head of this linked list"""
-        # TODO: prepend given item
-        pass
+        node = Node(item)
+        if self.is_empty():
+            self.tail = node
+        else:
+            node.next = self.head
+        self.head = node
 
     def delete(self, item):
         """Delete the given item from this linked list, or raise ValueError"""
-        # TODO: find given item and delete if found
-        pass
+        current_node = self._find_node(item)
+        if current_node is None:
+            raise ValueError('{0} does not contain {1}'.format(self.__class__.__name__, item))
+
+        if current_node == self.head and current_node == self.tail:
+            self.head = None
+            self.tail = None
+        elif current_node == self.head:
+            print(current_node.next)
+            self.head = current_node.next
+        elif current_node == self.tail:
+            previous_node = self._find_previous_node(current_node)
+            previous_node.next = None
+            self.tail = previous_node
+        else:
+            previous_node = self._find_previous_node(current_node)
+            previous_node.next = current_node.next
 
     def find(self, quality):
         """Return an item from this linked list satisfying the given quality"""
-        # TODO: find item where quality(item) is True
-        pass
+        for item in self.items():
+            if quality(item):
+                return item
+
+    def _find_node(self, item):
+        """Returns the first node it encounters where data is equal to item"""
+        current_node = self.head
+        while current_node is not None:
+            if current_node.data == item:
+                return current_node
+            current_node = current_node.next
+
+    def _find_previous_node(self, node):
+        """Returns the node that is before node"""
+        current_node = self.head
+        previous_node = None
+        while current_node is not None:
+            if current_node != node:
+                previous_node = current_node
+                current_node = current_node.next
+            else:
+                return previous_node
 
 
 def test_linked_list():

@@ -25,15 +25,15 @@ class LinkedListTest(unittest.TestCase):
         assert ll.head.data == 'A'
         assert ll.tail.data == 'C'
 
-    def test_as_list(self):
+    def test_items(self):
         ll = LinkedList()
-        assert ll.as_list() == []
+        assert ll.items() == []
         ll.append('A')
-        assert ll.as_list() == ['A']
+        assert ll.items() == ['A']
         ll.append('B')
-        assert ll.as_list() == ['A', 'B']
+        assert ll.items() == ['A', 'B']
         ll.append('C')
-        assert ll.as_list() == ['A', 'B', 'C']
+        assert ll.items() == ['A', 'B', 'C']
 
     def test_length(self):
         ll = LinkedList()
