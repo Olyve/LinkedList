@@ -9,6 +9,7 @@ class Node(object):
         """Initialize this node with the given data"""
         self.data = data
         self.next = None
+        self.previous = None
 
     def __repr__(self):
         """Return a string representation of this node"""
@@ -53,9 +54,9 @@ class LinkedList(object):
 
         if self.is_empty():
             self.head = node
-            node.next = None
         else:
             self.tail.next = node
+            node.previous = self.tail
 
         self.tail = node
 
@@ -66,6 +67,7 @@ class LinkedList(object):
             self.tail = node
         else:
             node.next = self.head
+            self.head.previous = node
         self.head = node
 
     def delete(self, item):
@@ -78,14 +80,14 @@ class LinkedList(object):
             self.head = None
             self.tail = None
         elif current_node == self.head:
-            print(current_node.next)
             self.head = current_node.next
+            self.head.previous = None
         elif current_node == self.tail:
-            previous_node = self._find_previous_node(current_node)
+            previous_node = current_node.previous
             previous_node.next = None
             self.tail = previous_node
         else:
-            previous_node = self._find_previous_node(current_node)
+            previous_node = current_node.previous
             previous_node.next = current_node.next
 
     def find(self, quality):
@@ -105,17 +107,6 @@ class LinkedList(object):
             if current_node.data == item:
                 return current_node
             current_node = current_node.next
-
-    def _find_previous_node(self, node):
-        """Returns the node that is before node"""
-        current_node = self.head
-        previous_node = None
-        while current_node is not None:
-            if current_node != node:
-                previous_node = current_node
-                current_node = current_node.next
-            else:
-                return previous_node
 
 
 def test_linked_list():
