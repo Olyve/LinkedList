@@ -33,8 +33,11 @@ class HashTable(object):
 
     def values(self):
         """Return a list of all values in this hash table"""
-        # TODO: Collect all values in each of the buckets
-        pass
+        items = []
+        for bucket in self.buckets:
+            for key, value in bucket.items():
+                items.append(value)
+        return items
 
     def items(self):
         """Return a list of all items (key-value pairs) in this hash table"""
@@ -46,28 +49,43 @@ class HashTable(object):
 
     def length(self):
         """Return the length of this hash table by traversing its buckets"""
-        # TODO: Count number of key-value entries in each of the buckets
-        return 0
+        length = 0
+        for bucket in self.buckets:
+            length += bucket.length()
+        return length
 
     def contains(self, key):
         """Return True if this hash table contains the given key, or False"""
-        # TODO: Check if the given key exists in a bucket
-        pass
+        if key in self.keys():
+            return True
+        return False
 
     def get(self, key):
         """Return the value associated with the given key, or raise KeyError"""
-        # TODO: Check if the given key exists and return its associated value
-        pass
+        index = self._bucket_index(key)
+        for _key, value in self.buckets[index].items():
+            if _key == key:
+                return value
+        raise KeyError
 
     def set(self, key, value):
         """Insert or update the given key with its associated value"""
-        # TODO: Insert or update the given key-value entry into a bucket
-        pass
+        bucket = self.buckets[self._bucket_index(key)]
+        if key in self.keys():
+            old_data = bucket.find(lambda x: x[0] == key)
+            bucket.replace(old_data, (key, value))
+        else:
+            bucket.append((key, value))
 
     def delete(self, key):
         """Delete the given key from this hash table, or raise KeyError"""
-        # TODO: Find the given key and delete its entry if found
-        pass
+        if self.contains(key) is False:
+            raise KeyError
+
+        bucket = self.buckets[self._bucket_index(key)]
+        for item in bucket.items():
+            if item[0] == key:
+                bucket.delete(item)
 
 
 def test_hash_table():
@@ -88,15 +106,15 @@ def test_hash_table():
     print('length: ' + str(ht.length()))
 
     # Enable this after implementing delete:
-    # print('Deleting entries:')
-    # ht.delete('I')
-    # print(ht)
-    # ht.delete('V')
-    # print(ht)
-    # ht.delete('X')
-    # print(ht)
-    # print('contains(X): ' + str(ht.contains('X')))
-    # print('length: ' + str(ht.length()))
+    print('Deleting entries:')
+    ht.delete('I')
+    print(ht)
+    ht.delete('V')
+    print(ht)
+    ht.delete('X')
+    print(ht)
+    print('contains(X): ' + str(ht.contains('X')))
+    print('length: ' + str(ht.length()))
 
 
 if __name__ == '__main__':
